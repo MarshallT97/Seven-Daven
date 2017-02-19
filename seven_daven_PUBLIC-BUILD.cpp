@@ -14,22 +14,21 @@ const char COLORS[4] = {'R','G','B'};
 const char *rules =
 "How To Play Seven Daven:\n\n"
 "Attacking:\n\n"
-"The person who attack during the turn is determine if their "
-"color beats the other.\n"
+"The person who attack during the turn is determine by their color.\n"
 "This is the order on what color beats what: "
 "Red(R) -> Green(G) -> Blue(B) -> Red(R)\n\n."
-"Damage is determine by the range group of the card the attacker plays.\n"
-"This is the range groups damage output:\n"
+"Nomral damage output is determine by the card played by the attacker.\n"
+"This is the card groups that will decide how much normal damage can the attacker output:\n"
 "[1-6] = +1, [7] = +3, [8-13] = +2.\n\n"
 "Damage Output:\n\n"
-"If the attacking player card is greater then the defending player card then the attack player damage gets a bonus +1.\n\n"
-"If defending player card is greater then the attacking player card then the attacking player damage is reduced by 1 only if defending player card - attacking player card is greater than or equal to 5 else the attacking player damage is normal.\n\n"
+"If the attacking player card is greater then the defending player card then the attacking player damage gets a +1 of bonus damage.\n\n"
+"If defending player card is greater then the attacking player card then the attacking player damage is reduced by 1 only if the defending player card - the attacking player card is greater than or equal to 3 or else the attacking player damage is normal.\n\n"
 "Special Rules For 7:\n\n"
 "If the attacking player plays the card 7, their damage ignore reduction.\n\n"
 "If the defending player plays the card 7, the attacking player damage is reduced by 1.\n\n"
 "If both players play a card 7 and do not have the same color then they both take +1 damage to health and ends the turn.\n\n"
 "Matching:\n\n"
-"If both players color are the same and not the card then no damage is done this turn and vice versa.\n\n"
+"If only both players color are the same and not the card they played, then no damage is done this turn and vice versa.\n\n"
 "If both players color and card are the same then they both get +1 to health and if the card is 7 then it becomes +2 to health rather then +1.";
 
 
@@ -235,8 +234,12 @@ int finalDMG(int atker, int pCard, int cCard){
       cout << "No Damage was done this turn\n";
       return 0;
     }
-    else{
+    else if(pCard == 7){
       cout << "Both players gain 2 HP\n";
+      return -3;
+    }
+    else{
+      cout << "Both players gain 1 HP\n";
       return -2;
     }
   }
@@ -317,6 +320,12 @@ int main(){
         cout << "Computer HP: " << computerHP << endl;
       }
       else if(atkDMG == -2){
+        playerHP++;
+        computerHP++;
+        cout << "\nPlayer HP: " << playerHP << endl;
+        cout << "Computer HP: " << computerHP << endl;
+      }
+      else if(atkDMG == -3){
         playerHP += 2;
         computerHP += 2;
         cout << "\nPlayer HP: " << playerHP << endl;
@@ -324,19 +333,23 @@ int main(){
       }
       else if(atkDMG != 0){
         if(whoATK == 1){
-          cout << "\nComputer is hit for a total of: " << atkDMG;
+          cout << "\nThe Computer is hit for a total of: " << atkDMG;
           computerHP -= atkDMG;
-          cout << "\nPlayer HP: " << playerHP << endl;
-          cout << "Computer HP: " << computerHP << endl;
         }
         else if(whoATK == -1){
-          cout << "\nPlayer is hit for a total of: " << atkDMG;
+          cout << "\nThe Player is hit for a total of: " << atkDMG;
           playerHP -= atkDMG;
-          cout << "\nPlayer HP: " << playerHP << endl;
-          cout << "Computer HP: " << computerHP << endl;
         }
+        cout << "\nPlayer HP: " << playerHP << endl;
+        cout << "Computer HP: " << computerHP << endl;
       }
       else{
+        if(whoATK == 1){
+          cout << "\nThe Computer is hit for a total of: " << atkDMG;
+        }
+        else if(whoATK == -1){
+          cout << "\nThe Player is hit for a total of: " << atkDMG;
+        }
         cout << "\nPlayer HP: " << playerHP << endl;
         cout << "Computer HP: " << computerHP << endl;
       }
